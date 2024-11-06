@@ -1,24 +1,36 @@
 import { lazy, Suspense, useEffect } from "react";
 import { Route, Routes } from "react-router";
-import { RestrictedRoute } from "../RestrictedRoute";
-import { PrivateRoute } from "../PrivateRoute";
+import RestrictedRoute from "../../components/RestrictedRoute/RestrictedRoute.jsx";
+import PrivateRoute from "../../components/PrivateRoute/PrivateRoute.jsx";
 
 const HomePage = lazy(() => import("../../pages/HomePage/HomePage.jsx"));
-const CatalogePage = lazy(() => import("../../pages/CatalogPage"));
+const CatalogePage = lazy(() =>
+  import("../../pages/CatalogPage/CatalogPage.jsx")
+);
 const CemperPage = lazy(() => import("../../pages/CemperPage/CamperPage.jsx"));
 
-import BookingForm from "../BookingForm/BookingForm.jsx";
+import BookingForm from "../../components/BookingForm/BookingForm.jsx";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { refresh } from "../../redux/auth/operations.js";
+import { getCurrentUser } from "../../redux/users/operations";
 
-import { useDispatch, useSelector } from "react-redux";
-import { refresh } from "../../redux/auth/operations";
-
-import { selectIsRefreshing } from "../../redux/auth/selectors.js";
+import { selectIsRefreshing, selectToken } from "../../redux/auth/selectors.js";
+import Loader from "../Loader/Loader.jsx";
 
 import Header from "../Header/Header.jsx";
 
 function App() {
   const dispatch = useDispatch();
+  const userToken = useSelector(selectToken);
+  console.log("userToken:", userToken);
   const isRefreshing = useSelector(selectIsRefreshing);
+
+  useEffect(() => {
+    if (userToken) {
+      dispatch(getCurrentUser());
+    }
+  }, [dispatch, userToken]);
 
   useEffect(() => {
     dispatch(refresh());
@@ -28,7 +40,7 @@ function App() {
     <div>Refreshing user please wait...</div>
   ) : (
     <Header>
-      <Suspense fallback={null}>
+      <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route
@@ -37,7 +49,7 @@ function App() {
               <RestrictedRoute
                 component={<CatalogePage />}
                 redirect
-                To="/catalog"
+                To="/campers"
               />
             }
           />
@@ -47,7 +59,7 @@ function App() {
               <RestrictedRoute
                 component={<CemperPage />}
                 redirect
-                To="/catalog/:id"
+                To="/campers/:id"
               />
             }
           />
