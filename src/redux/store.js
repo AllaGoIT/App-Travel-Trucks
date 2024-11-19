@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { trucksReducer } from "./trucks/slice.js";
+import { truckReducer } from "./truck/slice.js";
 import { authReducer } from "./auth/slice.js";
+import { userReducer } from "./users/slice.js";
 import storage from "redux-persist/lib/storage";
 import {
   persistStore,
@@ -19,12 +21,45 @@ const authPersistConfig = {
   whiteList: ["token"],
 };
 
+const trucksPersistConfig = {
+  key: "trucks",
+  storage: storage,
+  whiteList: [
+    "location",
+    "transmission, engine, AC, bathroom, kitchen, TV, radio, refrigerator, microwave, gas, water",
+    "van, fully integrated, alcove",
+  ],
+};
+
+const trucksDetailsPersistConfig = {
+  key: "truck",
+  storage: storage,
+  whiteList: [
+    "transmission, engine, AC, bathroom, kitchen, TV, radio, refrigerator, microwave, gas, water",
+    "form, length, width, height, tank, consumption",
+  ],
+};
+
+const usersPersistConfig = {
+  key: "users",
+  storage: storage,
+  whiteList: ["name"],
+};
+
 const persistAuthReducer = persistReducer(authPersistConfig, authReducer);
+const persistTrucksReducer = persistReducer(trucksPersistConfig, trucksReducer);
+const persistTruckReducer = persistReducer(
+  trucksDetailsPersistConfig,
+  truckReducer
+);
+const persistUserReducer = persistReducer(usersPersistConfig, userReducer);
 
 export const store = configureStore({
   reducer: {
     auth: persistAuthReducer,
-    trucks: trucksReducer,
+    trucks: persistTrucksReducer,
+    truck: persistTruckReducer,
+    user: persistUserReducer,
   },
   middleware: (getDefaultMiddleware) => {
     getDefaultMiddleware({
