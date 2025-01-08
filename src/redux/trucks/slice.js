@@ -22,18 +22,6 @@ const trucksSlice = createSlice({
       .addCase(fetchTrucks.rejected, (state) => {
         state.error = true;
         state.loading = false;
-      })
-      .addCase(fetchTruckDetail.pending, (state) => {
-        state.loading = true;
-        state.error = false;
-      })
-      .addCase(fetchTruckDetail.fullfield, (state, action) => {
-        state.loading = false;
-        state.items.filter((item) => item.id == action.payload.id);
-      })
-      .addCase(fetchTruckDetail.rejected, (state) => {
-        state.error = true;
-        state.loading = false;
       }),
 });
 

@@ -11,6 +11,12 @@ function Navigation() {
         <NavLink className={css.linkCont} to="./catalog">
           Cotalog
         </NavLink>
+        <NavLink className={css.link} to="/catalog/:id">
+          Reviews
+        </NavLink>
+        <NavLink className={css.link} to="/catalog/:id">
+          Features
+        </NavLink>
       </nav>
     </>
   );

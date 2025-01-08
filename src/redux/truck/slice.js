@@ -17,7 +17,7 @@ const truckSlice = createSlice({
       })
       .addCase(fetchTruckDetail.fullfield, (state, action) => {
         state.loading = false;
-        state.items.filter((item) => item.id == action.payload.id);
+        state.items.push(action.payload);
       })
       .addCase(fetchTruckDetail.rejected, (state) => {
         state.error = true;

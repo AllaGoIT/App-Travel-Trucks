@@ -1,31 +1,45 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getCurrentUser } from "./operations.js";
+import { reservation, refresh } from "./operations.js";
 
-const userSlice = createSlice({
-  name: "users",
+const authSlice = createSlice({
+  name: "auth",
   initialState: {
-    name: null,
-    email: null,
-    bookingDate: Date(),
+    user: {
+      name: null,
+      email: null,
+      bookingDate: Date(),
+      comment: null,
+    },
     token: null,
     isLoading: false,
-    isError: null,
+    isRefreshing: false,
   },
-  extraReducers: (builder) =>
+  extraRedusers: (builder) =>
     builder
-      .addCase(getCurrentUser.pending, (state) => {
+      .addCase(reservation.pending, (state) => {
         state.isLoading = true;
-        state.isError = false;
       })
-      .addCase(getCurrentUser.fulfilled, (state, action) => {
-        state.name = action.payload.name;
-        state.email = action.payload.email;
-        state.bookingDate = action.payload.date;
+      .addCase(reservation.fullfield, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
         state.token = action.payload.token;
       })
-      .addCase(getCurrentUser.rejected, (state) => {
-        state.isError = true;
+      .addCase(reservation.rejected, (state) => {
         state.isLoading = false;
+        state.token = null;
+      })
+      .addCase(refresh.pending, (state) => {
+        state.isRefreshing = true;
+      })
+
+      .addCase(refresh.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isRefreshing = false;
+      })
+
+      .addCase(refresh.rejected, (state) => {
+        state.isRefreshing = false;
       }),
 });
-export const userReducer = userSlice.reducer;
+
+export const usersReducer = authSlice.reducer;

@@ -1,10 +1,12 @@
 import Navigation from "../Navigation/Navigation.jsx";
 function Header() {
   return (
-    <header>
-      <p>TravelTracks</p>
-      <Navigation />
-    </header>
+    <>
+      <header>
+        <p>TravelTracks</p>
+        <Navigation />
+      </header>
+    </>
   );
 }
 

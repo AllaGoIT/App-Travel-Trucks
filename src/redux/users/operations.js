@@ -1,30 +1,40 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "https://66b1f8e71ca8ad33d4f5f63e.mockapi.io/campers";
-axios.defaults.baseURL = API_URL;
+axios.defaults.baseURL = "https://66b1f8e71ca8ad33d4f5f63e.mockapi.io";
 
-export const setAuthHeader = (token) => {
+const setAuthHeader = (token) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
-
-export const getCurrentUser = createAsyncThunk(
-  "users/current",
-  async (_, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const token = state.auth.token;
-
-    if (!token) {
-      return thunkAPI.rejectWithValue("No token found");
-    }
-
-    setAuthHeader(token);
-
+export const reservation = createAsyncThunk(
+  "users/reserve",
+  async (user, thunkAPI) => {
     try {
-      const response = await axios.get("/users");
-      return response.data.data;
+      const response = await axios.post("/users/reserve", user);
+      setAuthHeader(response.data.token);
+      return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.message);
+      return thunkAPI.rejectWithValue(error.massage);
     }
+  }
+);
+
+export const refresh = createAsyncThunk(
+  "users/refresh",
+  async (_, thunkAPI) => {
+    const reduxState = thunkAPI.getState();
+    setAuthHeader(reduxState.auth.token);
+    try {
+      const response = await axios.get("/users/current");
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.massage);
+    }
+  },
+  {
+    condition: (_, thunkAPI) => {
+      const reduxState = thunkAPI.getState();
+      return reduxState.auth.token !== null;
+    },
   }
 );
