@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { trucksReducer } from "./trucks/slice.js";
 import { truckReducer } from "./truck/slice.js";
 import { usersReducer } from "./users/slice.js";
-import { authReducer } from "./auth/slice.js";
+import { authReducer } from "./userFeedBack/slice.js";
 import storage from "redux-persist/lib/storage";
 import {
   persistStore,

@@ -1,11 +1,11 @@
 import { useDispatch } from "react-redux";
 import { useSelector, useEffect } from "react-redux";
 import { refresh } from "../../redux/users/operations.js";
-import { getCurrentUser } from "../../redux/auth/operations.js";
+import { getCurrentUser } from "../../redux/userFeedBack/operations.js";
 
-import { selectUserToken } from "../../redux/auth/selectors.js";
+import { selectUserToken } from "../../redux/userFeedBack/selectors.js";
 import { selectIsRefreshing } from "../../redux/users/selectors.js";
-import Navigation from "../../components/Navigation/Navigation.jsx";
+import { NavLink } from "react-router-dom";
 
 function CamperPage() {
   const dispatch = useDispatch();
@@ -26,10 +26,8 @@ function CamperPage() {
 
   return (
     <>
-      <p>Features</p>
-      <Navigation />
-      <p>Reviews</p>
-      <Navigation />
+      <NavLink to="/catalog/:id">Reviews</NavLink>
+      <NavLink to="/catalog/:id">Features</NavLink>
     </>
   );
 }

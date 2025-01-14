@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { fetchTruckDetail } from "./operations.js";
 
 const truckSlice = createSlice({
-  name: "truks",
+  name: "truck",
   initialState: {
-    filterItem: [],
+    filterTruck: [],
     loading: false,
     error: null,
   },
@@ -17,7 +17,7 @@ const truckSlice = createSlice({
       })
       .addCase(fetchTruckDetail.fullfield, (state, action) => {
         state.loading = false;
-        state.items.push(action.payload);
+        state.filterTruck.push(action.payload);
       })
       .addCase(fetchTruckDetail.rejected, (state) => {
         state.error = true;

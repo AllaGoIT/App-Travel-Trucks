@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getCurrentUser } from "./operations.js";
 
 const userSlice = createSlice({
-  name: "users",
+  name: "userFeedBack",
   initialState: {
     name: null,
     comment: null,
@@ -16,8 +16,8 @@ const userSlice = createSlice({
         state.isError = false;
       })
       .addCase(getCurrentUser.fulfilled, (state, action) => {
-        state.name = action.payload.name;
-        state.token = action.payload.token;
+        state.name = action.payload;
+        state.comment = action.payload;
       })
       .addCase(getCurrentUser.rejected, (state) => {
         state.isError = true;

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { reservation, refresh } from "./operations.js";
 
 const authSlice = createSlice({
-  name: "auth",
+  name: "users",
   initialState: {
     user: {
       name: null,
